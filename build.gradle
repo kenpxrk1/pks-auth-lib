@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'ru-mirea'
+version = '1.0.0'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.security:spring-security-web:6.4.4'
+    implementation 'org.springframework.security:spring-security-config:6.4.4'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure:3.4.4'
+
+    implementation 'org.springframework:spring-webmvc:6.2.5'
+
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.1.0'
+
+    implementation 'io.jsonwebtoken:jjwt-api:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.6'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
+
+    implementation 'org.slf4j:slf4j-api:2.0.17'
+}
