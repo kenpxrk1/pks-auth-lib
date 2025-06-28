@@ -28,4 +28,14 @@ dependencies {
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.6'
 
     implementation 'org.slf4j:slf4j-api:2.0.17'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.0'
+    testImplementation 'org.mockito:mockito-core:5.18.0'
+    testImplementation 'org.mockito:mockito-junit-jupiter:5.18.0'
+}
+
+test {
+    useJUnitPlatform()
+    def mockitoCore = configurations.testRuntimeClasspath.find { it.name.startsWith("mockito-core-") }
+    jvmArgs "-javaagent:${mockitoCore}"
 }

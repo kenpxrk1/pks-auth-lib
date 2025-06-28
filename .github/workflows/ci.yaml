@@ -1,0 +1,62 @@
+name: Java CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**/*.java'
+      - '**/*.xml'
+      - 'pom.xml'
+      - 'src/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**/*.java'
+      - '**/*.xml'
+      - 'pom.xml'
+      - 'src/**'
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Клонирование репозитория
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      # 2. Установка JDK 17 и кэширование зависимостей Gradle
+      - name: Set up JDK 17 and cache dependencies
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'               # Включает кэширование зависимостей Gradle
+
+      # 3. Сборка и тестирование проекта с Gradle
+      - name: Build and test with Gradle
+        run: ./gradlew build
+
+      # 4. Загрузка результатов тестов для анализа
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: '**/build/test-results/test/*'
+
+      # 5. Загрузка отчетов о покрытии кода (если используется JaCoCo)
+      - name: Upload code coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: '**/build/reports/jacoco/*'
+
+      # 6. Архивация артефактов сборки
+      - name: Archive build artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: '**/build/libs/*.jar'
